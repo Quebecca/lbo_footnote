@@ -70,15 +70,15 @@ class ProcessViewHelper extends AbstractViewHelper
         }
 
         $pattern = '/\<footquote content=\"([^"]*)\"\>(.*?)<\/footquote\>/im';
+        $content = html_entity_decode($content);
         preg_match_all($pattern, $content, $matchesFootquote);
-
         /** @var NoteBasPageRepository $noteBasPageRepository */
         $noteBasPageRepository = GeneralUtility::makeInstance(NoteBasPageRepository::class);
 
         if (isset($matchesFootquote[0])) {
             foreach ($matchesFootquote[0] as $index => $wholeFootquote) {
                 $footquote = $matchesFootquote[2][$index];
-                $description = html_entity_decode($matchesFootquote[1][$index]);
+                $description = $matchesFootquote[1][$index];
 
                 $noteBasPageRepository->addNote($description);
 
