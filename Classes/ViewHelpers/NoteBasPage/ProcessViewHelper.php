@@ -81,7 +81,7 @@ class ProcessViewHelper extends AbstractViewHelper
                 $footquote = $matchesFootquote[2][$index];
                 $description = $matchesFootquote[1][$index];
 
-                $noteBasPageRepository->addNote(html_entity_decode($description));
+                $noteBasPageRepository->addNote($description);
 
                 $index = $noteBasPageRepository->getCurrentIndex();
 
