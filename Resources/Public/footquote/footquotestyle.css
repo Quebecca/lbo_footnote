@@ -1,0 +1,19 @@
+/* ContextualBalloon */
+.ck-balloon-panel .ck.ck-footquote-form {
+    padding: 1rem 1rem 2.5rem 1rem;
+    position:relative;
+}
+/* inputs */
+.ck-balloon-panel .ck.ck-footquote-form .ck-labeled-field-view {
+    margin-bottom: 1rem;
+}
+/* Buttons */
+.ck-balloon-panel .ck.ck-footquote-form button{
+    position:absolute;
+}
+.ck-balloon-panel .ck.ck-footquote-form button:first-of-type{
+    left:3rem;
+}
+.ck-balloon-panel .ck.ck-footquote-form button:last-of-type{
+    right:3rem;
+}
