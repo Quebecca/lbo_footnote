@@ -14,7 +14,7 @@ export default class Footquoteediting extends Core.Plugin {
 
     // Extend the text node's schema to accept the footquote attribute.
     schema.extend( '$text', {
-      allowAttributes: [ 'content' ]
+      allowAttributes: [ 'footnote' ]
     } );
 
   }
@@ -25,13 +25,13 @@ export default class Footquoteediting extends Core.Plugin {
 
     // Conversion from a model attribute to a view element.
     conversion.for( 'downcast' ).attributeToElement( {
-      model: 'content',
+      model: 'footnote',
       // Callback function provides access to the model attribute value
       // and the DowncastWriter.
       view: ( modelAttributeValue, conversionApi ) => {
         const { writer } = conversionApi;
         return writer.createAttributeElement( 'footquote', {
-          content: modelAttributeValue
+          "content": modelAttributeValue
         } );
       }
     } );
@@ -44,7 +44,7 @@ export default class Footquoteediting extends Core.Plugin {
         attributes: [ 'content' ]
       },
       model: {
-        key: 'footquote',
+        key: 'footnote',
         // Callback function provides access to the view element.
         value: viewElement => {
           const content = viewElement.getAttribute( 'content' );

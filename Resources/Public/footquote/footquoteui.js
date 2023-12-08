@@ -53,9 +53,9 @@ export default class Footquoteui extends Core.Plugin {
       // Add values from form view to RTE
       editor.model.change( writer => {
         editor.model.insertContent(
-          writer.createText( foot, { content: desc } )
+          writer.createText( foot, { footnote: desc } )
         );
-      } );
+      });
       // Hide the form view after submit.
       this._hideUI();
     } );
