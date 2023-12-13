@@ -26,6 +26,7 @@ export default class Footquoteediting extends Core.Plugin {
     // Conversion from a model attribute to a view element.
     conversion.for( 'downcast' ).attributeToElement( {
       model: 'footnote',
+      name: 'footnote',
       // Callback function provides access to the model attribute value
       // and the DowncastWriter.
       view: ( modelAttributeValue, conversionApi ) => {

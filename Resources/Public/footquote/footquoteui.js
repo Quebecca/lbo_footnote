@@ -5,6 +5,9 @@ import {
   ContextualBalloon,
   clickOutsideHandler
 } from '@ckeditor/ckeditor5-ui';
+import {
+  ClickObserver
+} from '@ckeditor/ckeditor5-engine';
 import FormView from '@libeo/lbo_footnote/footquote-plugin-view.js';
 
 export default class Footquoteui extends Core.Plugin {
@@ -15,10 +18,14 @@ export default class Footquoteui extends Core.Plugin {
 
   init() {
     const editor = this.editor;
+    const view = editor.editing.view;
+    const viewDocument = view.document;
+    let modelElement = "";
+    let lastValue = "";
 
     // Create the balloon and the form view.
     this._balloon = this.editor.plugins.get( ContextualBalloon );
-    this.formView = this._createFormView();
+    this.formView = this._createFormView(lastValue);
 
     editor.ui.componentFactory.add( 'footquote', () => {
       const button = new ButtonView();
@@ -31,17 +38,29 @@ export default class Footquoteui extends Core.Plugin {
         withText: false
       } );
 
-      // After the user clicks it
+      // After the user clicks the button
       this.listenTo( button, 'execute', () => {
         this._showUI();
       } );
 
       return button;
     } );
+
+    // listener (click on the RTE)
+    view.addObserver( ClickObserver );
+    // After the user clicks on the text in RTE
+    editor.listenTo( viewDocument, 'click', (evt, data) => {
+      modelElement = data.target;
+      this.formView.saveButtonView.class = "ck-button-save";
+      if ( modelElement.name == 'footquote' ) {
+        this._showUIUpdate(data);
+      }
+    });
+
   }
 
   // Create formView from footquoteview
-  _createFormView() {
+  _createFormView(descValueBeforeSubmit) {
     const editor = this.editor;
     const formView = new FormView( editor.locale );
 
@@ -49,15 +68,53 @@ export default class Footquoteui extends Core.Plugin {
     this.listenTo( formView, 'submit', () => {
       const foot = formView.footInputView.fieldView.element.value;
       const desc = formView.descInputView.fieldView.element.value;
+      let submitClass = formView.saveButtonView.class;
 
-      // Add values from form view to RTE
-      editor.model.change( writer => {
-        editor.model.insertContent(
-          writer.createText( foot, { footnote: desc } )
+      // Update a footquote tag
+      if( submitClass == "ck-button-save updateFields" ){
+
+        // Get the block element of the current footquote (paragraph)
+        const selectedBlocks = Array.from(
+          editor.model.document.selection.getSelectedBlocks()
         );
-      });
+        const firstBlock = selectedBlocks[ 0 ];
+        const lastBlock = selectedBlocks[ selectedBlocks.length - 1 ];
+        const itemsToRemove = [];
+
+        editor.model.change( writer => {
+          const range = writer.createRange(
+            writer.createPositionAt( firstBlock, 0 ),
+            writer.createPositionAt( lastBlock, 'end' )
+          );
+
+          // validates all elements of the block element
+          let cpt=0;
+          for ( const value of range.getWalker() ) {
+            // Find the footnote tag
+            if(value.item.textNode._attrs.get("footnote") === descValueBeforeSubmit){
+              // Can't delete here because it's an iterator.
+              itemsToRemove.push( value.item );
+            }
+          }
+          // Make a second FOR to delete the element.
+          for ( const item of itemsToRemove ) {
+            writer.remove( item ); // remove all of the items.
+          }
+
+        } );
+      }
+
+      // Add a new footnote tag in RTE
+        editor.model.change( writer => {
+          editor.model.insertContent(
+            writer.createText( foot, { footnote: desc } ),
+            editor.model.document.selection
+          );
+        });
+
       // Hide the form view after submit.
       this._hideUI();
+
     } );
 
     // Hide the form view after clicking the "Cancel" button.
@@ -89,6 +146,30 @@ export default class Footquoteui extends Core.Plugin {
     return {
       target
     };
+  }
+
+  // Function to display the balloon with the clicked footquote tag in RTE (View form)
+  _showUIUpdate(data) {
+
+    // values from RTE
+    const footValue = data.target._children[0]._textData;
+    const descValue = data.target._attrs.get('content');
+
+    // Create the form and the balloon
+    this.formView = this._createFormView(descValue);
+    this._showUI();
+
+    // Set the input value in form
+    this.formView.footInputView.fieldView.element.value = footValue;
+    this.formView.descInputView.fieldView.element.value = descValue;
+
+    // Set the values so that they are not empty (placeholder will not change place)
+    this.formView.footInputView.fieldView.isEmpty = false;
+    this.formView.descInputView.fieldView.isEmpty = false;
+
+    // New class to detect update on submit
+    this.formView.saveButtonView.class = "ck-button-save updateFields"
+
   }
 
   // Function to show the balloon (form View)
