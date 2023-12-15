@@ -2,7 +2,9 @@
 import {
   View,
   LabeledFieldView,
+  TextareaView,
   createLabeledInputText,
+  LabelView,
   ButtonView,
   submitHandler
 }from '@ckeditor/ckeditor5-ui';
@@ -17,7 +19,8 @@ export default class FormView extends View {
 
     // Create all inputs
     this.footInputView = this._createInput( 'Note de bas de page' );
-    this.descInputView = this._createInput( 'Description' );
+    this.labelTextArea = this._createLabelTextarea( 'Description', "descriptionFootnote" );
+    this.descInputView = this._createTextarea( 'Description', "descriptionFootnote" );
 
     // Create the save and cancel buttons.
     this.saveButtonView = this._createButton(
@@ -34,9 +37,12 @@ export default class FormView extends View {
     // Delegate ButtonView#execute to FormView#cancel.
     this.cancelButtonView.delegate( 'execute' ).to( this, 'cancel' );
 
+
+
     // Wrapping up the form view
     this.childViews = this.createCollection( [
       this.footInputView,
+      this.labelTextArea,
       this.descInputView,
       this.saveButtonView,
       this.cancelButtonView
@@ -51,6 +57,7 @@ export default class FormView extends View {
       },
       children: this.childViews
     } );
+
   }
 
   render() {
@@ -73,6 +80,35 @@ export default class FormView extends View {
     const labeledInput = new LabeledFieldView( this.locale, createLabeledInputText );
     labeledInput.label = label;
     return labeledInput;
+  }
+
+  // Function to create a label for textarea
+  _createLabelTextarea( label, idTextArea ){
+    //Config label's TextArea
+    const labelTextArea = new LabelView( this.locale );
+    labelTextArea.for = idTextArea;
+    labelTextArea.text = label;
+
+    labelTextArea.render();
+    labelTextArea.element.className = "ck ck-label label-textarea";
+
+    return labelTextArea;
+}
+
+
+  // Function to create a textarea
+  _createTextarea(  label, idTextArea ) {
+    const textArea = new TextareaView( this.locale );
+
+    textArea.minRows = 5;
+    textArea.maxRows = 10;
+    textArea.label = label;
+
+    textArea.render();
+
+    textArea.element.id = idTextArea;
+
+    return textArea;
   }
 
   // Function to create form's button

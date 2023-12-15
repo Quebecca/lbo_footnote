@@ -67,7 +67,7 @@ export default class Footquoteui extends Core.Plugin {
     // On the submit of form
     this.listenTo( formView, 'submit', () => {
       const foot = formView.footInputView.fieldView.element.value;
-      const desc = formView.descInputView.fieldView.element.value;
+      const desc = formView.descInputView.element.value;
       let submitClass = formView.saveButtonView.class;
 
       // Update a footquote tag
@@ -161,11 +161,11 @@ export default class Footquoteui extends Core.Plugin {
 
     // Set the input value in form
     this.formView.footInputView.fieldView.element.value = footValue;
-    this.formView.descInputView.fieldView.element.value = descValue;
+    this.formView.descInputView.element.value = descValue;
 
     // Set the values so that they are not empty (placeholder will not change place)
     this.formView.footInputView.fieldView.isEmpty = false;
-    this.formView.descInputView.fieldView.isEmpty = false;
+    this.formView.descInputView.isEmpty = false;
 
     // New class to detect update on submit
     this.formView.saveButtonView.class = "ck-button-save updateFields"
@@ -184,7 +184,7 @@ export default class Footquoteui extends Core.Plugin {
   // Function to hide the balloon (form View)
   _hideUI() {
     this.formView.footInputView.fieldView.value = '';
-    this.formView.descInputView.fieldView.value = '';
+    this.formView.descInputView.value = '';
     this.formView.element.reset();
     this._balloon.remove( this.formView );
     // Focus the editing view after closing the form view.

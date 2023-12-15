@@ -3,13 +3,22 @@
     padding: 1rem 1rem 2.5rem 1rem;
     position:relative;
 }
-/* inputs */
-.ck-balloon-panel .ck.ck-footquote-form .ck-labeled-field-view {
+/* inputs et textarea */
+.ck-balloon-panel .ck.ck-footquote-form .ck-labeled-field-view,
+.ck-balloon-panel .ck.ck-footquote-form .ck-textarea{
     margin-bottom: 1rem;
+}
+
+/* Label */
+.ck-balloon-panel .ck.ck-footquote-form .label-textarea{
+    color:#757575;
+    font-weight: 400;
+    line-height: normal;
 }
 /* Buttons */
 .ck-balloon-panel .ck.ck-footquote-form button{
     position:absolute;
+    bottom: 0.5rem;
 }
 .ck-balloon-panel .ck.ck-footquote-form button:first-of-type{
     left:3rem;
