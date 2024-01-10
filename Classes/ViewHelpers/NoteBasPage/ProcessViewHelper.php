@@ -33,6 +33,8 @@ class ProcessViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $content = $renderChildrenClosure();
+        $entities = array("&amp;lt;", "&amp;gt;");
+        $entitiesFe = array("&lt;", "&gt;");
 
         // Check if it exist for performance reason
         if (strstr($content, 'footquote') === false) {
@@ -63,7 +65,8 @@ class ProcessViewHelper extends AbstractViewHelper
                     }
 
                     $wholeTableNewContent .= TemplateUtility::displayNotes($arrayListIndexFootquote, 'table-' . $indexTable . '-');
-
+                    $wholeTableNewContent = str_replace('&amp;apos;', '&apos;', $wholeTableNewContent);
+                    $wholeTableNewContent = str_replace($entities, $entitiesFe, $wholeTableNewContent);
                     $content = str_replace($wholeTable, $wholeTableNewContent, $content);
                 }
             }
@@ -71,6 +74,7 @@ class ProcessViewHelper extends AbstractViewHelper
 
         $pattern = '/\<footquote content=\"([^"]*)\"\>(.*?)<\/footquote\>/im';
         // cf https://www.php.net/manual/en/function.html-entity-decode.php#117876
+        $content = str_replace($entities, $entitiesFe, $content);
         $content = html_entity_decode($content, ENT_QUOTES | ENT_XML1, 'UTF-8');
         preg_match_all($pattern, $content, $matchesFootquote);
         /** @var NoteBasPageRepository $noteBasPageRepository */
@@ -80,7 +84,6 @@ class ProcessViewHelper extends AbstractViewHelper
             foreach ($matchesFootquote[0] as $index => $wholeFootquote) {
                 $footquote = $matchesFootquote[2][$index];
                 $description = $matchesFootquote[1][$index];
-
                 $noteBasPageRepository->addNote($description);
 
                 $index = $noteBasPageRepository->getCurrentIndex();
@@ -93,7 +96,6 @@ class ProcessViewHelper extends AbstractViewHelper
                 $content = str_replace($wholeFootquote, $linkToNote, $content);
             }
         }
-
         return $content;
     }
 

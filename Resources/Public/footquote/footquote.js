@@ -12,6 +12,11 @@ export default class Footquote extends Core.Plugin {
   // Add footnote as allow element to RTE (save tt_content)
   init() {
 
+    // Clean code
+    this.editor.model.document.once( 'change:data', () => {
+      this.cleanFootnoteLink();
+    } );
+
     // Extend schema with custom HTML elements.
      const dataFilter = this.editor.plugins.get( 'DataFilter' );
      const dataSchema = this.editor.plugins.get( 'DataSchema' );
@@ -32,4 +37,30 @@ export default class Footquote extends Core.Plugin {
     })
 
   }
+
+  // function to clean the code before saving it
+  cleanFootnoteLink(){
+    let content = this.editor.getData();
+    let paternFootquote = /<footquote content=/g;
+    let results = content.matchAll(paternFootquote);
+
+    for (const result of results) {
+
+      let patternContentValue = /content="[^\"]+">/g;
+      let valueContent = patternContentValue.exec(content.substring(result.index));
+      let newValueContent = "";
+      let patternLink = /href=/g;
+
+      if(patternLink.test(valueContent[0])){
+        newValueContent = valueContent[0].replaceAll('<', '&amp;lt;');
+        newValueContent = newValueContent.replaceAll( '>','&amp;gt;');
+        newValueContent = newValueContent.replaceAll( '"&amp;gt;','">');
+
+        content = content.replaceAll(valueContent[0] , newValueContent);
+      }
+
+      this.editor.setData(content);
+    }
+  }
+
 }
