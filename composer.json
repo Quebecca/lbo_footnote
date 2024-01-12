@@ -21,6 +21,5 @@
         "typo3/cms": {
             "extension-key": "lbo_footnote"
         }
-    },
-	"version": "12.4.6-dev"
+    }
 }
