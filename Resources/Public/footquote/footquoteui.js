@@ -66,7 +66,7 @@ export default class Footquoteui extends Core.Plugin {
 
     // On the submit of form
     this.listenTo( formView, 'submit', () => {
-      const foot = formView.footInputView.fieldView.element.value;
+      const foot = formView.footInputView.fieldView.element.value || "note";
       const desc = formView.descInputView.element.value;
       let submitClass = formView.saveButtonView.class;
 
