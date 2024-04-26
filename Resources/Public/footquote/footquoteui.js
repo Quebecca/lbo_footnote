@@ -61,13 +61,15 @@ export default class Footquoteui extends Core.Plugin {
 
   // Create formView from footquoteview
   _createFormView(descValueBeforeSubmit) {
+    console.log("creatingFormView")
     const editor = this.editor;
     const formView = new FormView( editor.locale );
-
     // On the submit of form
     this.listenTo( formView, 'submit', () => {
+
       const foot = formView.footInputView.fieldView.element.value || "note";
-      const desc = formView.descInputView.element.value;
+      const desc = formView.editor.getData();
+      // console.log("formview editor ")
       let submitClass = formView.saveButtonView.class;
 
       // Update a footquote tag
@@ -161,14 +163,19 @@ export default class Footquoteui extends Core.Plugin {
 
     // Set the input value in form
     this.formView.footInputView.fieldView.element.value = footValue;
-    this.formView.descInputView.element.value = descValue;
+    // this.formView.descInputView.element.value = descValue;
+    console.log("_showUIUpdate", this.formView._editor)
+    this.formView.getEditor()
+        .then(editor => editor.setData(descValue))
 
     // Set the values so that they are not empty (placeholder will not change place)
     this.formView.footInputView.fieldView.isEmpty = false;
     this.formView.descInputView.isEmpty = false;
 
+
     // New class to detect update on submit
     this.formView.saveButtonView.class = "ck-button-save updateFields"
+
 
   }
 
@@ -178,15 +185,21 @@ export default class Footquoteui extends Core.Plugin {
       view: this.formView,
       position: this._getBalloonPositionData()
     } );
+    this.formView.getEditor()
+    console.log("_showUI", this.formView.editor)
     this.formView.focus();
   }
 
   // Function to hide the balloon (form View)
   _hideUI() {
     this.formView.footInputView.fieldView.value = '';
-    this.formView.descInputView.value = '';
+    // this.formView.descInputView.value = '';
+    this.formView
+          .getEditor()
+          .then(editor => editor.setData(""))
     this.formView.element.reset();
     this._balloon.remove( this.formView );
+    console.log("_hideUI", this.formView.editor)
     // Focus the editing view after closing the form view.
     this.editor.editing.view.focus();
   }

@@ -8,6 +8,15 @@ import {
   ButtonView,
   submitHandler
 }from '@ckeditor/ckeditor5-ui';
+import { Essentials } from '@ckeditor/ckeditor5-essentials';
+import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
+import { Heading } from '@ckeditor/ckeditor5-heading';
+import { List } from '@ckeditor/ckeditor5-list';
+import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
+
+import {ClassicEditor} from "@ckeditor/ckeditor5-editor-classic";
+import {ClassicEditor as Editor} from "./Editors";
+import Footquote from "./footquote";
 
 
 export default class FormView extends View {
@@ -19,8 +28,9 @@ export default class FormView extends View {
 
     // Create all inputs
     this.footInputView = this._createInput( 'Note de bas de page' );
-    this.labelTextArea = this._createLabelTextarea( 'Description', "descriptionFootnote" );
-    this.descInputView = this._createTextarea( 'Description', "descriptionFootnote" );
+    let textareaId = "descriptionFootnote"
+    this.labelTextArea = this._createLabelTextarea( 'Description',  textareaId);
+    this.descInputView = this._createTextarea( 'Description', textareaId );
 
     // Create the save and cancel buttons.
     this.saveButtonView = this._createButton(
@@ -59,6 +69,30 @@ export default class FormView extends View {
     } );
 
   }
+
+  getEditor() {
+
+    if (this.editor) {
+      console.log("get existing editor")
+      return  Promise.resolve(this.editor);
+    }
+    if (this.editorPromise) {
+      return this.editorPromise
+    }
+    this.editorPromise =  Editor.create(this.descInputView.element, {
+      plugins: [ Essentials, Bold, Italic, Heading, List, Paragraph ],
+      toolbar: [ 'bold', 'italic', 'numberedList', 'bulletedList' ]
+    }).then(editor => {
+      console.log("get new editor")
+      editor.ui.view.editable.element.parentNode.classList.add('ck-reset_all-excluded');
+      console.log(editor.ui.view.editable.element)
+
+      this.editor = editor
+      return editor
+    })
+    return this.editorPromise;
+  }
+
 
   render() {
     super.render();
@@ -99,7 +133,7 @@ export default class FormView extends View {
   // Function to create a textarea
   _createTextarea(  label, idTextArea ) {
     const textArea = new TextareaView( this.locale );
-
+    console.log("creating textarea")
     textArea.minRows = 5;
     textArea.maxRows = 10;
     textArea.label = label;
