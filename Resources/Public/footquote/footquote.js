@@ -1,12 +1,14 @@
 // Footquote will be the glue that holds the UI and the editing together.
-import FootquoteEditing from '@libeo/lbo_footnote/footquote-plugin-editing.js';
-import FootquoteUI from '@libeo/lbo_footnote/footquote-plugin-ui.js';
+import FootquoteEditing from './footquoteediting';
+import FootquoteUI from './footquoteui';
 import * as Core from '@ckeditor/ckeditor5-core';
 import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
 
 export default class Footquote extends Core.Plugin {
   static get requires() {
-    return [ FootquoteEditing, FootquoteUI, GeneralHtmlSupport ];
+    return [ FootquoteEditing, FootquoteUI
+      , GeneralHtmlSupport
+    ];
   }
 
   // Add footnote as allow element to RTE (save tt_content)
