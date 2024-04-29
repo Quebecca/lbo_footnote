@@ -15,14 +15,4 @@
     font-weight: 400;
     line-height: normal;
 }
-/* Buttons */
-.ck-balloon-panel .ck.ck-footquote-form button{
-    /*position:absolute;*/
-    /*bottom: 0.5rem;*/
-}
-.ck-balloon-panel .ck.ck-footquote-form button:first-of-type{
-    left:3rem;
-}
-.ck-balloon-panel .ck.ck-footquote-form button:last-of-type{
-    right:3rem;
-}
+
