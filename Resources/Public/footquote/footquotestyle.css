@@ -17,8 +17,8 @@
 }
 /* Buttons */
 .ck-balloon-panel .ck.ck-footquote-form button{
-    position:absolute;
-    bottom: 0.5rem;
+    /*position:absolute;*/
+    /*bottom: 0.5rem;*/
 }
 .ck-balloon-panel .ck.ck-footquote-form button:first-of-type{
     left:3rem;

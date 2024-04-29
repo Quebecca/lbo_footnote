@@ -74,8 +74,8 @@ class ProcessViewHelper extends AbstractViewHelper
 
         $pattern = '/\<footquote content=\"([^"]*)\"\>(.*?)<\/footquote\>/im';
         // cf https://www.php.net/manual/en/function.html-entity-decode.php#117876
-        $content = str_replace($entities, $entitiesFe, $content);
-        $content = html_entity_decode($content, ENT_QUOTES | ENT_XML1, 'UTF-8');
+        $content = str_replace($entities, $entitiesFe, $content); //  |
+        $content = html_entity_decode($content,  ENT_XML1, 'UTF-8');
         preg_match_all($pattern, $content, $matchesFootquote);
         /** @var NoteBasPageRepository $noteBasPageRepository */
         $noteBasPageRepository = GeneralUtility::makeInstance(NoteBasPageRepository::class);
@@ -83,7 +83,8 @@ class ProcessViewHelper extends AbstractViewHelper
         if (isset($matchesFootquote[0])) {
             foreach ($matchesFootquote[0] as $index => $wholeFootquote) {
                 $footquote = $matchesFootquote[2][$index];
-                $description = $matchesFootquote[1][$index];
+                $rawDescription = $matchesFootquote[1][$index];
+                $description = html_entity_decode($rawDescription,  ENT_QUOTES, 'UTF-8');
                 $noteBasPageRepository->addNote($description);
 
                 $index = $noteBasPageRepository->getCurrentIndex();

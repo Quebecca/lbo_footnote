@@ -10,11 +10,11 @@ import {
 }from '@ckeditor/ckeditor5-ui';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
-import { Heading } from '@ckeditor/ckeditor5-heading';
-import { List } from '@ckeditor/ckeditor5-list';
-import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
+import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
+import {Typo3Link} from '@typo3/rte-ckeditor/plugin/typo3-link.js'
 
-import {ClassicEditor as Editor} from "@libeo-footquote/Editors";
+// import {ClassicEditor as Editor} from "@libeo-footquote/Editors";
+import { ClassicEditor as Editor } from '@ckeditor/ckeditor5-editor-classic';
 
 
 
@@ -79,8 +79,14 @@ export default class FormView extends View {
       return this.editorPromise
     }
     this.editorPromise =  Editor.create(this.descInputView.element, {
-      plugins: [ Essentials, Bold, Italic, Heading, List, Paragraph ],
-      toolbar: [ 'bold', 'italic', 'numberedList', 'bulletedList' ]
+      plugins: [Paragraph, Essentials, Typo3Link,GeneralHtmlSupport ],
+      typo3link: this.rootEditor?.config.get("typo3link") ?? {},
+      paragraph: {
+        forcedContent: false, // Désactive l'ajout automatique de balises <p>
+        p: false, // Désactive la gestion des balises <p>,
+        br: true
+      },
+      toolbar: [ 'link']
     }).then(editor => {
       console.log("get new editor")
       editor.ui.view.editable.element.parentNode.classList.add('ck-reset_all-excluded');

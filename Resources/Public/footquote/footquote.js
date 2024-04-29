@@ -13,11 +13,11 @@ export default class Footquote extends Core.Plugin {
 
   // Add footnote as allow element to RTE (save tt_content)
   init() {
-
+    console.log("Config", this.editor.config)
     // Clean code
-    this.editor.model.document.once( 'change:data', () => {
-      this.cleanFootnoteLink();
-    } );
+    // this.editor.model.document.once( 'change:data', () => {
+    //   this.cleanFootnoteLink();
+    // } );
 
     // Extend schema with custom HTML elements.
      const dataFilter = this.editor.plugins.get( 'DataFilter' );

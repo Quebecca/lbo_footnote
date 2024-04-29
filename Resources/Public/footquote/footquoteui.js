@@ -64,11 +64,17 @@ export default class Footquoteui extends Core.Plugin {
     console.log("creatingFormView")
     const editor = this.editor;
     const formView = new FormView( editor.locale );
+    formView.rootEditor = this.editor
     // On the submit of form
     this.listenTo( formView, 'submit', () => {
 
       const foot = formView.footInputView.fieldView.element.value || "note";
-      const desc = formView.editor.getData();
+      const desc = formView.editor
+            .getData()
+            .replaceAll("<p>", "")
+            .replaceAll("</p>", "")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;");
       // console.log("formview editor ")
       let submitClass = formView.saveButtonView.class;
 
@@ -128,7 +134,11 @@ export default class Footquoteui extends Core.Plugin {
     clickOutsideHandler( {
       emitter: formView,
       activator: () => this._balloon.visibleView === formView,
-      contextElements: [ this._balloon.view.element ],
+      contextElements: () => {
+        let linkBaloons = document.querySelectorAll(".ck-link-actions")
+        console.log("clickOutsideHandler", linkBaloons)
+        return [this._balloon.view.element, ...linkBaloons]
+      } ,
       callback: () => this._hideUI()
     } );
 
@@ -166,7 +176,10 @@ export default class Footquoteui extends Core.Plugin {
     // this.formView.descInputView.element.value = descValue;
     console.log("_showUIUpdate", this.formView._editor)
     this.formView.getEditor()
-        .then(editor => editor.setData(descValue))
+        .then(editor => editor.setData(descValue
+          .replaceAll("&lt;","<")
+          .replaceAll("&gt;",">")
+        ))
 
     // Set the values so that they are not empty (placeholder will not change place)
     this.formView.footInputView.fieldView.isEmpty = false;
