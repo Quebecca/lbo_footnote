@@ -8,6 +8,7 @@
 const path = require( 'path' );
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 
+
 module.exports = {
     // https://webpack.js.org/configuration/entry-context/
     entry: './app.js',
@@ -52,7 +53,16 @@ module.exports = {
                     }
                 ]
             }
-        ]
+        ],
+
+    },
+
+    // Autres configurations...
+    resolve: {
+        alias: {
+            '@libeo-footquote': path.resolve(__dirname, 'Resources/Public/footquote'),
+        },
+
     },
 
     // Useful for debugging.

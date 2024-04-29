@@ -1,6 +1,6 @@
 // Footquote will be the glue that holds the UI and the editing together.
-import FootquoteEditing from './footquoteediting';
-import FootquoteUI from './footquoteui';
+import FootquoteEditing from '@libeo-footquote/footquoteediting';
+import FootquoteUI from '@libeo-footquote/footquoteui';
 import * as Core from '@ckeditor/ckeditor5-core';
 import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
 

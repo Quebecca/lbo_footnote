@@ -8,7 +8,7 @@ import {
 import {
   ClickObserver
 } from '@ckeditor/ckeditor5-engine';
-import FormView from './footquoteview';
+import FormView from '@libeo-footquote/footquoteview';
 
 export default class Footquoteui extends Core.Plugin {
 

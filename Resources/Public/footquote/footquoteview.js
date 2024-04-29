@@ -14,9 +14,8 @@ import { Heading } from '@ckeditor/ckeditor5-heading';
 import { List } from '@ckeditor/ckeditor5-list';
 import { Bold, Italic } from '@ckeditor/ckeditor5-basic-styles';
 
-import {ClassicEditor} from "@ckeditor/ckeditor5-editor-classic";
-import {ClassicEditor as Editor} from "./Editors";
-import Footquote from "./footquote";
+import {ClassicEditor as Editor} from "@libeo-footquote/Editors";
+
 
 
 export default class FormView extends View {
