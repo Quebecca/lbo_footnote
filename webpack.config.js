@@ -61,6 +61,7 @@ module.exports = {
     resolve: {
         alias: {
             '@libeo-footquote': path.resolve(__dirname, 'Resources/Public/footquote'),
+            '@typo3': path.resolve(__dirname, 'Resources/Public/typo3-mockup'),
         },
 
     },

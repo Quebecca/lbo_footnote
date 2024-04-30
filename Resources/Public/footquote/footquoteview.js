@@ -12,8 +12,6 @@ import { Essentials } from '@ckeditor/ckeditor5-essentials';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
 import {Typo3Link} from '@typo3/rte-ckeditor/plugin/typo3-link.js'
-
-// import {ClassicEditor as Editor} from "@libeo-footquote/Editors";
 import { ClassicEditor as Editor } from '@ckeditor/ckeditor5-editor-classic';
 
 

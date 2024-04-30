@@ -135,7 +135,7 @@ export default class Footquoteui extends Core.Plugin {
       emitter: formView,
       activator: () => this._balloon.visibleView === formView,
       contextElements: () => {
-        let linkBaloons = document.querySelectorAll(".ck-link-actions")
+        let linkBaloons = document.querySelectorAll(".ck-link-actions, .ck-link-form") // ck-link-form for mokup outside typo3 usage
         console.log("clickOutsideHandler", linkBaloons)
         return [this._balloon.view.element, ...linkBaloons]
       } ,

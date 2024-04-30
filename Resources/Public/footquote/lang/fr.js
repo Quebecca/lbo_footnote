@@ -1,3 +1,4 @@
+/** @todo : code ckeditor 4 à migrer en 5 */
 CKEDITOR.plugins.setLang( 'footquote', 'fr', {
     insertFootquote: 'Insérer une note de bas de page',
     footquote: 'Note de bas de page',
